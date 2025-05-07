@@ -1,4 +1,3 @@
-from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
 from langchain.llms.base import LLM
 from dotenv import load_dotenv
@@ -28,7 +27,6 @@ class GeminiLLM(LLM):
     def _llm_type(self) -> str:
         return "gemini"
 
-
 # Initialize Gemini LLM
 llm = GeminiLLM()
 
@@ -57,18 +55,15 @@ prompt = PromptTemplate(
     template=template
 )
 
-# LangChain Chain Setup
-recipe_chain = LLMChain(
-    llm=llm,
-    prompt=prompt
-)
+# New LangChain chain setup using RunnableSequence (prompt | llm)
+chain = prompt | llm
 
 def generate_recipe(ingredients_text, spice_level="Medium", regional_style="North Indian", meal_type="Lunch"):
     """
     Generate a recipe based on provided ingredients string and preferences.
     """
     try:
-        result = recipe_chain.run({
+        result = chain.invoke({
             "ingredients": ingredients_text,
             "spice_level": spice_level,
             "regional_style": regional_style,
