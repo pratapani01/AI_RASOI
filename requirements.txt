@@ -1,0 +1,10 @@
+streamlit
+requests
+langchain
+openai
+whisper
+python-dotenv
+ultralytics
+langchain
+langchain-community
+huggingface_hub
