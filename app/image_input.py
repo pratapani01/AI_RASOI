@@ -1,31 +1,38 @@
-from ultralytics import YOLO
-import cv2
-import tempfile
-import os
+from PIL import Image
+import torch
+import timm
+import torchvision.transforms as transforms
+import requests
 
-def detect_ingredients_from_image(uploaded_image):
-    """
-    Takes an uploaded image and returns a list of detected ingredient names.
-    """
+# Load model and labels globally
+model = timm.create_model('resnet50', pretrained=True)
+model.eval()
+
+# Load ImageNet labels
+LABELS_URL = "https://raw.githubusercontent.com/pytorch/hub/master/imagenet_classes.txt"
+imagenet_labels = requests.get(LABELS_URL).text.split("\n")
+
+# Image transform
+transform = transforms.Compose([
+    transforms.Resize((224, 224)),
+    transforms.ToTensor(),
+    transforms.Normalize(
+        mean=[0.485, 0.456, 0.406],
+        std=[0.229, 0.224, 0.225]
+    )
+])
+
+def detect_dish_from_image(uploaded_image):
     try:
-        # Save uploaded image temporarily
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp:
-            tmp.write(uploaded_image.read())
-            image_path = tmp.name
+        img = Image.open(uploaded_image).convert("RGB")
+        img_tensor = transform(img).unsqueeze(0)
 
-        # Load YOLOv8 model (assume pretrained on food/ingredients)
-        model = YOLO("yolov8n.pt")  # Replace with custom food model if needed
+        with torch.no_grad():
+            outputs = model(img_tensor)
+            _, predicted = outputs.max(1)
 
-        # Perform detection
-        results = model(image_path)
-        labels = results[0].names
-        detected_classes = results[0].boxes.cls.tolist()
-        detected_labels = list(set([labels[int(cls)] for cls in detected_classes]))
-
-        # Cleanup temp file
-        os.remove(image_path)
-
-        return detected_labels
+        dish_name = imagenet_labels[predicted.item()]
+        return dish_name
 
     except Exception as e:
-        return [f"Error in detection: {str(e)}"]
+        return f"Error in classification: {str(e)}"

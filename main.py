@@ -4,8 +4,9 @@ import sys
 from app.recipe_generator import generate_recipe
 from app.nutrition_lookup import get_nutrition_data
 from app.voice_input import transcribe_audio
-from app.image_input import detect_ingredients_from_image
+# from app.image_input import detect_ingredients_from_image
 from app.database import save_recipe  # ✅ Added import
+from app.image_input import detect_dish_from_image
 
 spice_levels = ["Mild", "Medium", "Spicy", "Extra Spicy"]
 regional_styles = ["North Indian", "South Indian", "East Indian", "West Indian"]
@@ -36,9 +37,17 @@ def process_text_input(text, spice, region, meal):
     ingredients = [x.strip() for x in text.split(",") if x.strip()]
     return handle_ingredients(ingredients, spice, region, meal)
 
+
+  # update import
+
 def process_image_input(image, spice, region, meal):
-    ingredients = detect_ingredients_from_image(image)
-    return handle_ingredients(ingredients, spice, region, meal)
+    dish_name = detect_dish_from_image(image)
+    if dish_name.startswith("Error"):
+        return dish_name, ""
+    
+    recipe = generate_recipe(dish_name, spice, region, meal)
+    return f"Detected Dish: {dish_name}", recipe
+
 
 def type_effect(recipe_text):
     lines = recipe_text.split("\n")
@@ -134,7 +143,7 @@ footer {
 
         with gr.Tabs():
             with gr.Tab("Text"):
-                text_input = gr.Textbox(label="🧾 Enter ingredients (comma-separated)", lines=3)
+                text_input = gr.Textbox(label="🧾 Enter ingredients (comma-separated)/dish for recipe", lines=3)
                 spice_dropdown_t = gr.Dropdown(spice_levels, label="🌶️ Spice Level", value="Medium")
                 region_dropdown_t = gr.Dropdown(regional_styles, label="🌍 Regional Style", value="North Indian")
                 meal_dropdown_t = gr.Dropdown(meal_types, label="🍴 Meal Type", value="Lunch")
