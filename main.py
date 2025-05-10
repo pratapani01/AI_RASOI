@@ -152,6 +152,7 @@ footer {
                 status_box = gr.Textbox(label="", visible=False, interactive=False, show_copy_button=False)
                 text_nutrition = gr.Textbox(label="🧪 Nutrition Summary", lines=6, visible=False)
                 text_recipe = gr.Textbox(label="🍽️ Suggested Recipe", lines=20, max_lines=70, autoscroll=False, show_copy_button=True, visible=False)
+                
 
                 def on_click_text_generate(text, spice, region, meal):
                     return (
