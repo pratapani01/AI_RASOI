@@ -35,11 +35,11 @@ The model used in this application is the Gemini model from the LangChain librar
 * The Hugging Face library for providing the Transformers library used in language processing
 ## Preview
 
-![App Screenshot](images/first.png)
-![App Screenshot](images/second.png)
-![App Screenshot](images/third.png)
-![App Screenshot](images/fourth.png)
-![App Screenshot](images/fifth.png)
+![App Screenshot](data/images/fifth.png)
+![App Screenshot](data/images/first.png)
+![App Screenshot](data/images/fourth.png)
+![App Screenshot](data/images/second.png)
+![App Screenshot](data/images/third.png)
 
 
 for running the app use:
