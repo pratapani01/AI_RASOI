@@ -33,3 +33,14 @@ The model used in this application is the Gemini model from the LangChain librar
 * The Ultralytics library for providing the YOLO model used in image processing
 * The Whisper library for providing the speech recognition model used in voice input
 * The Hugging Face library for providing the Transformers library used in language processing
+## Preview
+
+![App Screenshot](images/first.png)
+![App Screenshot](images/second.png)
+![App Screenshot](images/third.png)
+![App Screenshot](images/fourth.png)
+![App Screenshot](images/fifth.png)
+
+
+for running the app use:
+python main.py
