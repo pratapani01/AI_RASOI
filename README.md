@@ -15,7 +15,7 @@ TadkaGPT is an AI-powered recipe generation tool that takes in a list of ingredi
 
 1. Install the required packages using `pip install -r requirements.txt`
 2. Run the application using `python main.py`
-3. Open a web browser and navigate to `http://localhost:8501`
+3. Open a web browser and navigate to `http://127.0.0.1:7860/`
 4. Enter a list of ingredients in the input field and select the desired regional style, meal type, and spice level
 5. Click the "Generate Recipe" button to generate a recipe based on the input ingredients
 
